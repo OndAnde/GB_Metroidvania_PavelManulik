@@ -5,15 +5,15 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private GameObject playerAvatar;
+    [SerializeField] private Transform player;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnStep = 1f;
     [SerializeField] private float angularSpeed = .5f;
-    private Transform player;
+    
 
     private void Start()
     {
-        player = playerAvatar.transform;
+        
         
     }
 

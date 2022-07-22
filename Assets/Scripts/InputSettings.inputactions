@@ -45,7 +45,7 @@
                     "name": "CameraMove",
                     "type": "Value",
                     "id": "d4d71248-b4cc-456a-9c35-e071becf9ff3",
-                    "expectedControlType": "Axis",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -198,18 +198,7 @@
                 {
                     "name": "",
                     "id": "f2414b5f-b750-411e-90b1-15339a0bd54e",
-                    "path": "<Mouse>/position/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse and Keyboard",
-                    "action": "CameraMove",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c4f8a4b1-d13d-453b-b291-80d6f5aa0e73",
-                    "path": "<Mouse>/position/y",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
