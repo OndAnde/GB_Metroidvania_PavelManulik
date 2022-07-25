@@ -10,18 +10,22 @@ public class NewPlayerController : MonoBehaviour
     [SerializeField] private float spawnStep = 1f;
     [SerializeField] private float angularSpeed = .5f;
     [SerializeField] private float speed;
+    [SerializeField] private float runSpeed;
+
+    [SerializeField] private float inAirTimer;
     [SerializeField] private float jumpPower;
-    [SerializeField] private float gravity;
+    [SerializeField] private float leapingVelocity;
+    [SerializeField] private float fallingVelocity;
+    [SerializeField] private float rayCastHeightOffset;
+    [SerializeField] private LayerMask groundLayer;
 
-
-
-    //private CharacterController _characterController;
     private Rigidbody _characterRigidbody;
     private Animator _characterAnimator;
     private InputSettings _input;
     private bool isRunning;
+    private bool isGrounded;
     private Vector2 direction;
-    private Vector3 moveDirection;
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +39,10 @@ public class NewPlayerController : MonoBehaviour
         _input = new InputSettings();
 
         _input.Player.Shoot.performed += context => Shoot();
+
         _input.Player.Jump.performed += context => Jump();
+        
+        
         _input.Player.Sprint.started += context => isRunning = true;
         _input.Player.Sprint.canceled += context => isRunning = false;
 
@@ -53,13 +60,10 @@ public class NewPlayerController : MonoBehaviour
 
     private void Update()
     {
-        //print("Raycast - " + Physics.Raycast(transform.position, Vector3.down, 0f));
-        //_characterAnimator.SetBool("inAir", _characterController.isGrounded);
-        //if (_characterController.isGrounded)
+        CheckGrounding();
         _characterRigidbody.angularVelocity = Vector3.zero;
         if (Physics.Raycast(transform.position, Vector3.down, 0.1f))
         {
-            
             _characterAnimator.SetBool("inAir", false);
             _characterAnimator.SetBool("Landing", true);
             direction = _input.Player.Move.ReadValue<Vector2>();
@@ -77,13 +81,9 @@ public class NewPlayerController : MonoBehaviour
                 _characterAnimator.SetBool("Landing", false);
             }
 
-                _characterAnimator.SetBool("Jump", false);
+            _characterAnimator.SetBool("Jump", false);
             _characterAnimator.SetBool("inAir", true);
-          
-            direction = _input.Player.Move.ReadValue<Vector2>();
-            MoveController(direction);
-            //moveDirection.y -= gravity * Time.deltaTime;
-            //_characterController.Move(moveDirection);
+
         }
 
 
@@ -92,42 +92,68 @@ public class NewPlayerController : MonoBehaviour
     private void MoveController(Vector2 direction)
     {
         Vector3 p = _characterRigidbody.velocity;
-        Debug.Log("Forward - " + transform.forward);
-        Debug.Log("Right - " + transform.right);
-        Vector3 s = transform.forward + transform.right;
-       
-        s.x *= direction.x * speed * Time.deltaTime;
-        s.z *= direction.y * speed * Time.deltaTime;
+        direction = Vector2.ClampMagnitude(direction, 1);
+        Vector3 forward = transform.forward;
+        Vector3 sides = transform.right;
+        p = forward * direction.y + sides * direction.x;
 
-        _characterAnimator.SetFloat("x", direction.x * 1);
-        _characterAnimator.SetFloat("y", direction.y * (isRunning ? 7.9f : 4));
-        moveDirection = new Vector3(direction.x * speed * Time.deltaTime, 0, direction.y * speed * Time.deltaTime);
-        moveDirection = Vector3.ClampMagnitude(moveDirection, 1) * speed;
-        //_characterRigidbody.velocity = new Vector3(moveDirection.x, _characterRigidbody.velocity.y, moveDirection.z);
-        _characterRigidbody.velocity = s;
-        //moveDirection.x
-        //Camera.transform.position = transform.position;
-        //_characterController.Move(moveDirection);
-        //Vector3 moveDirection = new Vector3(-direction.x, 0, -direction.y);
-        //transform.position += moveDirection * speed * Time.deltaTime;
+        _characterAnimator.SetFloat("x", (direction.x == 0 ? 0 : direction.x < 0 ? -1 : 1) * (isRunning ? 8f : 4));
+        _characterAnimator.SetFloat("y", (direction.y == 0 ? 0 : direction.y < 0 ? -1 : 1) * (isRunning ? 8f : 4));
+        Debug.Log("Vel origin - " + _characterRigidbody.velocity);
+        _characterRigidbody.velocity = (isRunning ? runSpeed * speed : speed) * Vector3.ClampMagnitude(p, 1);
+        Debug.Log("Vel output - " + _characterRigidbody.velocity);
+
     }
 
     private void Jump()
     {
         
-        if (Physics.Raycast(transform.position, Vector3.down, 0.1f))
+        if (isGrounded)
         {
             print("hehe " + Physics.Raycast(transform.position, Vector3.down, 0.1f));
             _characterAnimator.SetBool("Jump", true);
             _characterAnimator.SetBool("Landing", false);
-            _characterRigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            _characterRigidbody.AddForce(transform.up * jumpPower, ForceMode.Impulse);
         }
         else
         {
             print("not hehe " + Physics.Raycast(transform.position, Vector3.down, 0.1f));
         }
+        //_characterRigidbody.AddForce(transform.up * jumpPower, ForceMode.Impulse);
 
+    }
 
+    private void CheckGrounding()
+    {
+        RaycastHit hit;
+        Vector3 rayCastOrigin = transform.position;
+        rayCastOrigin.y = rayCastOrigin.y + rayCastHeightOffset;
+
+        if (!isGrounded)
+        {
+            _characterAnimator.SetBool("inAir", true);
+            _characterAnimator.SetBool("Landing", false);
+            
+            //_characterRigidbody.AddForce(transform.forward * leapingVelocity);
+            //_characterRigidbody.AddForce(-Vector3.up * fallingVelocity * inAirTimer);
+        }
+
+        if (Physics.SphereCast(rayCastOrigin, rayCastHeightOffset, -Vector3.up, out hit, groundLayer))
+        {
+            if (!isGrounded)
+            {
+                _characterAnimator.SetBool("inAir", false);
+                _characterAnimator.SetBool("Landing", true);
+            }
+            inAirTimer = 0;
+            isGrounded = true;
+            
+        }
+        else
+        {
+            isGrounded = false;
+            
+        }
     }
 
     private void Shoot()

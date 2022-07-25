@@ -355,9 +355,33 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 1.59
       objectReference: {fileID: 0}
+    - target: {fileID: 332263816027269307, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Height
+      value: 1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 332263816027269307, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Radius
+      value: 0.22722393
+      objectReference: {fileID: 0}
+    - target: {fileID: 332263816027269307, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 332263816027269307, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Center.y
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 332263816027269307, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 332263816027269307, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Direction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 629105568654358318, guid: 5b97c817582714858891618b7969b95c, type: 3}
       propertyPath: speed
-      value: 30
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 629105568654358318, guid: 5b97c817582714858891618b7969b95c, type: 3}
       propertyPath: Camera
@@ -366,6 +390,10 @@ PrefabInstance:
     - target: {fileID: 629105568654358318, guid: 5b97c817582714858891618b7969b95c, type: 3}
       propertyPath: gravity
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 629105568654358318, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: runSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 629105568654358318, guid: 5b97c817582714858891618b7969b95c, type: 3}
       propertyPath: jumpPower
@@ -379,6 +407,14 @@ PrefabInstance:
       propertyPath: bulletPrefab
       value: 
       objectReference: {fileID: 7808178906237041099, guid: e0501129032594780882e63b7dcc2bad, type: 3}
+    - target: {fileID: 831236309385175167, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 831236309385175167, guid: 5b97c817582714858891618b7969b95c, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 5265690053471855884, guid: 5b97c817582714858891618b7969b95c, type: 3}
       propertyPath: pawn
       value: 
@@ -4945,7 +4981,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh49430
+  m_Name: pb_Mesh25020
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
