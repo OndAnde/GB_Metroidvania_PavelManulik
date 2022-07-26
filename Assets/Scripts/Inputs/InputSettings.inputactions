@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "09c29420-2d91-4880-b899-64623ee36e35",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -43,12 +43,21 @@
                 },
                 {
                     "name": "CameraMove",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "d4d71248-b4cc-456a-9c35-e071becf9ff3",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Walk",
+                    "type": "Button",
+                    "id": "ff6d159f-7e04-4524-8adf-c1fefba9c1b6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -203,6 +212,17 @@
                     "processors": "",
                     "groups": "Mouse and Keyboard",
                     "action": "CameraMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "495c9945-9bcb-4296-b19b-c84c54a601ec",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
