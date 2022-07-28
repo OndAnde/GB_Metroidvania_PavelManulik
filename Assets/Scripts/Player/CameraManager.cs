@@ -22,7 +22,11 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float minPivotAngle = -35f;
     [SerializeField] float maxPivotAngle = 35f;
 
+    [SerializeField] LayerMask iteractableLayers;
+    [SerializeField] float maxRange = 0.2f;
+
     InputManager _input;
+    UIManager _uiManager;
     private Vector3 cameraFollowVelocity = Vector3.zero;
     private Vector3 cameraVectorPosition;
     private float defaultPosition;
@@ -32,6 +36,7 @@ public class CameraManager : MonoBehaviour
         //targetTransform = FindObjectOfType<PlayerManager>().transform;
         _input = FindObjectOfType<InputManager>();
         defaultPosition = cameraTransform.localPosition.z;
+        _uiManager = FindObjectOfType<UIManager>();
     }
 
     public void HandleAllCameraMovement()
@@ -39,6 +44,7 @@ public class CameraManager : MonoBehaviour
         FollowTarget();
         RotateCamera();
         HandleCameraCollisions();
+        HandleIteractableObjects();
     }
 
 
@@ -95,5 +101,21 @@ public class CameraManager : MonoBehaviour
 
         cameraTransform.localPosition = cameraVectorPosition;
 
+    }
+
+    private void HandleIteractableObjects()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, maxRange, iteractableLayers))
+        {
+            if (hit.transform.tag == "Door")
+            {
+                _uiManager.ShowSuggestion("Press E to open door");
+            }
+        }
+        else
+        {
+            _uiManager.CloseSuggestion();
+        }
     }
 }

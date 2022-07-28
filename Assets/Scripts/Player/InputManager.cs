@@ -7,7 +7,9 @@ public class InputManager : MonoBehaviour
 
     InputSettings _inputSettings;
     PlayerAnimatorManager _animatorManager;
+    PlayerActionManager _actionManager;
     PlayerLocomotion _locomotion;
+    GunSystem _gunSystem;
 
     public Vector2 movementInput;
     public Vector2 cameraInput;
@@ -23,11 +25,15 @@ public class InputManager : MonoBehaviour
     public bool sprintInput;
     public bool jumpInput;
     public bool walkInput = false;
+    public bool shootImput;
+    public bool actionImput;
 
     private void Awake()
     {
         _animatorManager = GetComponent<PlayerAnimatorManager>();
         _locomotion = GetComponent<PlayerLocomotion>();
+        _gunSystem = GetComponentInChildren<GunSystem>();
+        _actionManager = GetComponent<PlayerActionManager>();
     }
 
     private void OnEnable()
@@ -42,6 +48,9 @@ public class InputManager : MonoBehaviour
             _inputSettings.Player.Sprint.canceled += i => sprintInput = false;
             _inputSettings.Player.Walk.performed += i => walkInput = !walkInput;
             _inputSettings.Player.Jump.performed += i => jumpInput = true;
+            _inputSettings.Player.Shoot.performed += i => shootImput = true;
+            _inputSettings.Player.Shoot.canceled += i => shootImput = false;
+            _inputSettings.Player.Action.performed += i => actionImput = true;
         }
 
         _inputSettings.Enable();
@@ -58,8 +67,8 @@ public class InputManager : MonoBehaviour
         HandleSprintingInput();
         HandleWalkingInput();
         HandleJumpInput();
-        //HandleShootInput();
-        //HandleInteractInput();
+        HandleShootInput();
+        HandleActionInput();
 
     }
 
@@ -107,4 +116,30 @@ public class InputManager : MonoBehaviour
             _locomotion.HandleJump();
         }
     }
+
+    private void HandleShootInput()
+    {
+        if (shootImput)
+        {
+            if (_gunSystem && _gunSystem.isAutomatic)
+            {
+                _gunSystem.handleShoot();
+            }
+            else if (_gunSystem)
+            {
+                shootImput = false;
+                _gunSystem.handleShoot();
+            }
+        }
+    }
+
+    private void HandleActionInput()
+    {
+        if (actionImput)
+        {
+            actionImput = false;
+            _actionManager.HandleAction();
+        }
+    }
+
 }

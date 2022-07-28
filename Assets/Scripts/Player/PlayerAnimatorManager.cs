@@ -82,7 +82,26 @@ public class PlayerAnimatorManager : MonoBehaviour
             if (isWalking)
             {
                 snappedHorizontal = horizontalMovement;
-                snappedVertical = 0.5f;
+                if (verticalMovement > 0 && verticalMovement < 0.55f)
+                {
+                    snappedVertical = 0.5f;
+                }
+                else if (verticalMovement > 0.55f)
+                {
+                    snappedVertical = 0.5f;
+                }
+                else if (verticalMovement < 0 && verticalMovement > -0.55f)
+                {
+                    snappedVertical = -0.5f;
+                }
+                else if (verticalMovement < -0.55f)
+                {
+                    snappedVertical = -0.5f;
+                }
+                else
+                {
+                    snappedVertical = 0f;
+                }
             }
         }
 
