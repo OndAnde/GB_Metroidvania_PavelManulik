@@ -27,6 +27,8 @@ public class CameraManager : MonoBehaviour
 
     InputManager _input;
     UIManager _uiManager;
+    Door _door;
+    Weapon _weapon;
     private Vector3 cameraFollowVelocity = Vector3.zero;
     private Vector3 cameraVectorPosition;
     private float defaultPosition;
@@ -106,11 +108,27 @@ public class CameraManager : MonoBehaviour
     private void HandleIteractableObjects()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, maxRange, iteractableLayers))
+        if (Physics.SphereCast(transform.position, 0.2f, transform.forward, out hit, maxRange, iteractableLayers))
         {
+            switch (hit.transform.tag)
+            {
+                case "Door":
+                    _door = hit.transform.GetComponent<Door>();
+                    if (!_door.isAutomatic)
+                    {
+                        _uiManager.ShowSuggestion("Press E to open door");
+                    }
+                    break;
+                case "Weapon":
+                    _weapon = hit.transform.GetComponent<ItemObject>().item as Weapon;
+                    _uiManager.ShowSuggestion(_weapon.description);
+                    break;
+            }
             if (hit.transform.tag == "Door")
             {
-                _uiManager.ShowSuggestion("Press E to open door");
+                
+                
+                
             }
         }
         else

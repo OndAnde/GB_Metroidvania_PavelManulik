@@ -4,25 +4,34 @@ using UnityEngine;
 
 public class PawnManager : MonoBehaviour
 {
-    [SerializeField] private float health;
+    [SerializeField] public float health;
     [SerializeField] private float stamina;
     [SerializeField] private GameObject unit;
 
+    UIManager _uiManager;
+
     //private float currentHealth;
 
-    //private void Awake()
-    //{
-    //    currentHealth = health;
-    //}
+    private void Awake()
+    {
+        _uiManager = FindObjectOfType<UIManager>();
+    }
 
     public void DamageDeal(float damage)
     {
         health -= damage;
+        if (unit.name == "Pawn")
+        {
+            _uiManager.ShowHealth(health.ToString());
+        }
         if (health <= 0)
         {
-            if (unit.name != "PlayerPawn")
+            if (unit.name != "Pawn")
             {
                 Destroy(unit);
+            }
+            else {
+                _uiManager.ShowHealth("DEAD");
             }
             
             //Time.timeScale = 0;

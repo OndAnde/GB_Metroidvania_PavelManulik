@@ -6,6 +6,7 @@ public class Door : MonoBehaviour
 {
     [SerializeField] private float maxDistance;
     [SerializeField] private bool needKey;
+    [SerializeField] private bool isOpened = false;
     [SerializeField]  private LayerMask player;
     [SerializeField]  Animator _animator;
 
@@ -21,6 +22,24 @@ public class Door : MonoBehaviour
     {
     }
 
+    public void HandleInteraction()
+    {
+        if (isOpened)
+        {
+
+                print("player");
+                HandleCloseAction();
+            
+        }
+        else
+        {
+            print("player");
+            HandleOpenAction();
+        }
+
+
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (isAutomatic)
@@ -31,17 +50,7 @@ public class Door : MonoBehaviour
                 HandleOpenAction();
             }
         }
-        else
-        {
-            if (needKey)
-            {
 
-            }
-            else
-            {
-
-            }
-        }
 
     }
 
@@ -51,19 +60,8 @@ public class Door : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                print("not_player");
+                print("player");
                 HandleCloseAction();
-            }
-        }
-        else
-        {
-            if (needKey)
-            {
-
-            }
-            else
-            {
-
             }
         }
 
@@ -72,15 +70,15 @@ public class Door : MonoBehaviour
     private void HandleOpenAction()
     {
         
-
-               _animator.SetBool("character_nearby", true);
+        _animator.SetBool("character_nearby", true);
+        isOpened = true;
 
     }
 
     private void HandleCloseAction()
     {
 
-                _animator.SetBool("character_nearby", false);
-
+        _animator.SetBool("character_nearby", false);
+        isOpened = false;
     }
 }

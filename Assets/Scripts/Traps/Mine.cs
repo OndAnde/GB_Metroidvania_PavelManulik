@@ -21,6 +21,7 @@ public class Mine : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        print("KABOOOM");
 
         if (collision.gameObject.tag == "Player")
         {
@@ -30,7 +31,7 @@ public class Mine : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.name == "PlayerPawn")
+        if (collision.gameObject.name == "Pawn")
         {
             
         }
