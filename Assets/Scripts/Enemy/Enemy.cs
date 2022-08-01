@@ -8,14 +8,8 @@ public class Enemy : MonoBehaviour
     private bool floor;
 
     [SerializeField] private Rigidbody enemyRigidBody;
-    //[SerializeField] private float speed = 500;
-    //[SerializeField] private float runSpeed = 2;
     [SerializeField] private float jumpPower = 100;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

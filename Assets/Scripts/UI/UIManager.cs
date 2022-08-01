@@ -9,16 +9,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI characterParams;
     [SerializeField] private PawnManager pawnManager;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void ShowSuggestion(string suggestion)
     {
         suggestField.text = suggestion;

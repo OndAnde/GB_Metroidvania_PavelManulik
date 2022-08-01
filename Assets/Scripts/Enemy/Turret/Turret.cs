@@ -9,13 +9,6 @@ public class Turret : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnStep = 1f;
     [SerializeField] private float angularSpeed = .5f;
-    
-
-    private void Start()
-    {
-        
-        
-    }
 
     private void OnEnable()
     {
