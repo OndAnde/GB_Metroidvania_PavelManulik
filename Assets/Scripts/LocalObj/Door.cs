@@ -34,7 +34,7 @@ public class Door : MonoBehaviour
     {
         if (isAutomatic)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player") || other.CompareTag("Enemy"))
             {
                 print("player");
                 HandleOpenAction();
@@ -48,7 +48,7 @@ public class Door : MonoBehaviour
     {
         if (isAutomatic)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player") || other.CompareTag("Enemy"))
             {
                 print("player");
                 HandleCloseAction();

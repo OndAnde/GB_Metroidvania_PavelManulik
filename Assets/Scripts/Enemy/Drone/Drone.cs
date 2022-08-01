@@ -14,6 +14,21 @@ public class Drone : MonoBehaviour
     {
         player = FindObjectOfType<PlayerLocomotion>().transform;
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) {
+            targetConfirmed = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            targetConfirmed = false;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()

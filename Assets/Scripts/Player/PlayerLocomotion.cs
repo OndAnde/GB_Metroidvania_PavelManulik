@@ -172,11 +172,12 @@ public class PlayerLocomotion : MonoBehaviour
         {
             _playerAnimatorManager._animator.SetBool("isJumping", true);
             _playerAnimatorManager.PlayTargetAnimation("Jump", false);
-
+            //float jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+            //
             float jumpingVelocity = Mathf.Pow(-2 * gravityIntensity * jumpHeight, 2);
             Vector3 playerVelocity = moveDirection;
             playerVelocity.y = jumpingVelocity;
-            _playerRigidbody.velocity = playerVelocity;
+            //_playerRigidbody.velocity = playerVelocity;
             _playerRigidbody.AddForce(playerVelocity, ForceMode.Impulse);
         }
 
