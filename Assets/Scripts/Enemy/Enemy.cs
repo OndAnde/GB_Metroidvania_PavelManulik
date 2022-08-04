@@ -5,35 +5,95 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
-    private bool floor;
+    [SerializeField] private Bullet bulletPrefab;
+    [SerializeField] private Transform player;
 
-    [SerializeField] private Rigidbody enemyRigidBody;
-    [SerializeField] private float jumpPower = 100;
+    [SerializeField] private float spawnStep = 1f;
+    [SerializeField] private float angularSpeed = .5f;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private Transform[] spawnPoint;
+    [SerializeField] private float fireRate = .1f;
+    private float nextSpawnTime;
+
+    [SerializeField] private int poolCount = 20;
+    private ObjPool<Bullet> pool;
+    private int counter = 0;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        Init();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (floor == true)
-        {
-            enemyRigidBody.AddForce(transform.up * jumpPower);
-        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-
-        if (collision.gameObject.tag == "Floor")
-        {
-            floor = true;
-        }
+        StartCoroutine(LookAtPlayer());
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit()
     {
-        if (collision.gameObject.tag == "Floor")
+        StopCoroutine(LookAtPlayer());
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(Shoot());
+    }
+
+    private IEnumerator Shoot()
+    {
+        RaycastHit hit;
+
+        while (enabled)
         {
-            floor = false;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 10f, layerMask))
+            {
+                if (hit.transform.tag == "Player")
+                {
+                    if (Time.time > nextSpawnTime)
+                    {
+                        if (counter >= spawnPoint.Length)
+                        {
+                            counter = 0;
+                        }
+                        Bullet bullet = pool.GetFreeElement();
+                        bullet.transform.SetPositionAndRotation(spawnPoint[counter].position, spawnPoint[counter].rotation);
+                        counter++;
+                        nextSpawnTime = Time.time + fireRate;
+                    }
+                    yield return new WaitForSeconds(spawnStep);
+                }
+            }
+            
         }
+        yield return null;
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(Shoot());
+    }
+
+    private IEnumerator LookAtPlayer()
+    {
+        while (enabled)
+        {
+            var direction = player.transform.position - transform.position;
+            var rotation = Vector3.RotateTowards(transform.forward, direction, angularSpeed * Time.deltaTime, 0f);
+            transform.rotation = Quaternion.LookRotation(rotation);
+            yield return new WaitForEndOfFrame();
+        }
+        yield return null;
+        
+    }
+
+    private void Init()
+    {
+        pool = new ObjPool<Bullet>(bulletPrefab, poolCount, transform);
     }
 }
