@@ -40,6 +40,10 @@ public class Door : MonoBehaviour
                 HandleOpenAction();
             }
         }
+        else if (other.CompareTag("Enemy"))
+        {
+            HandleOpenAction();
+        }
 
 
     }
@@ -53,6 +57,10 @@ public class Door : MonoBehaviour
                 print("player");
                 HandleCloseAction();
             }
+        }
+        else if (other.CompareTag("Enemy"))
+        {
+            HandleCloseAction();
         }
 
     }
